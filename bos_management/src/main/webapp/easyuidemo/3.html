@@ -15,8 +15,10 @@
 				$("#czbkLink").click(function(){
 					// 添加一个新的选项卡 
 					$("#mytabs").tabs('add',{
+					    id:'cz',
 						title:'传智播客',
-						content: '传智播客专注IT培训教育'
+						content: '传智播客专注IT培训教育',
+
 					});
 				});
 			});
@@ -28,12 +30,13 @@
 			<!--折叠面板 -->
 			<div class="easyui-accordion" data-options="fit:true">
 				<div data-options="title:'基础菜单'">
-					<!-- --> 
+					<!--测试添加选项卡面板 -->
 					<a href="javascript:void(0)" id="czbkLink">传智播客</a>
 				</div>
 				<div data-options="title:'系统菜单'">面板二</div>
 			</div>
 		</div>
+
 		<div data-options="region:'center'">
 			<!-- 选项卡面板-->
 			<div id="mytabs" class="easyui-tabs" data-options="fit:true">
