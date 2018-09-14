@@ -1,6 +1,7 @@
 package cn.itcast.bos.web.action.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -42,7 +43,8 @@ public class StandardAction extends ActionSupport implements
 	private StandardService standardService;
 
 	// 添加操作
-	@Action(value = "standard_save", results = { @Result(name = "success", type = "redirect", location = "./pages/base/standard.html") })
+	@Action(value = "standard_save", results = { @Result(name = "success",
+			type = "redirect", location = "./pages/base/standard.html") })
 	public String save() {
 		System.out.println("添加收派标准....");
 		standardService.save(standard);
@@ -81,4 +83,18 @@ public class StandardAction extends ActionSupport implements
 		return SUCCESS;
 	}
 
+	//standard_findAll
+	/*@Action(value = "standard_findAll",results = {@Result(name = "success",type = "json")})
+	public String findAll(){
+		List<Standard> standardList=standardService.findAll();
+
+		ActionContext.getContext().getValueStack().push(standardList);
+		return SUCCESS;
+	}*/
+	@Action(value = "standard_findAll",results = {@Result(name = "success",type = "json")})
+	public String findAll(){
+		List<Standard> standardList=standardService.findAll();
+		ActionContext.getContext().getValueStack().push(standardList);
+		return SUCCESS;
+	}
 }

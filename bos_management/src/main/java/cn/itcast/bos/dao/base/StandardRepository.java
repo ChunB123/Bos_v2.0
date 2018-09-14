@@ -12,17 +12,17 @@ import cn.itcast.bos.domain.base.Standard;
 public interface StandardRepository extends JpaRepository<Standard, Integer> {
 	
 	// 根据收派标准名称查询 
-	//List<Standard> findByNameLike(String name);
+	/*List<Standard> findByNameLike(String name);
 	
-	/*@Query(value="from Standard where name = ?" ,nativeQuery=false)
+	@Query(value="from Standard where name = ?" ,nativeQuery=false)
 	// nativeQuery 为 false 配置J PQL 、 为true 配置SQL
-	List<Standard> queryName(String name);*/
+	List<Standard> queryName(String name);
 	
-	/*@Query
-	List<Standard> queryName(String name);*/
+	@Query
+	List<Standard> queryName2(String name);
 	
 
-	/*@Query(value = "update Standard set minLength=? where id =?")
+	@Query(value = "update Standard set minLength=? where id =?")
 	@Modifying
 	void updateMinLength(Integer minLength,Integer id);*/
 }
