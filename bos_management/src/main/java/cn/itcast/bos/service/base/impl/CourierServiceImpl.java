@@ -11,6 +11,13 @@ import cn.itcast.bos.dao.base.CourierRepository;
 import cn.itcast.bos.domain.base.Courier;
 import cn.itcast.bos.service.base.CourierService;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @Transactional
 public class CourierServiceImpl implements CourierService {
@@ -36,6 +43,23 @@ public class CourierServiceImpl implements CourierService {
 			Integer id = Integer.parseInt(idStr);
 			courierRepository.updateDelTag(id);
 		}
+	}
+
+	@Override
+	public List<Courier> findNoAssociation() {
+		// 封装Specification
+		Specification<Courier> specification = new Specification<Courier>() {
+			@Override
+			public Predicate toPredicate(Root<Courier> root,
+			                             CriteriaQuery<?> query, CriteriaBuilder cb) {
+				// 查询条件，判定列表size为空,关联的定区为空,则是要求得到的快递员
+				Predicate p = cb.isEmpty(root.get("fixedAreas").as(Set.class));
+				return p;
+			}
+
+
+		};
+		return courierRepository.findAll(specification);
 	}
 
 

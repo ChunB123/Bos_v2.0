@@ -3,14 +3,7 @@ package cn.itcast.bos.domain.base;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.struts2.json.annotations.JSON;
 
@@ -23,6 +16,7 @@ public class Courier {
 
 	@Id
 	@GeneratedValue
+	//默认值GenerationType.AUTO 自动选择最适合底层数据库的主键生成策略
 	@Column(name = "C_ID")
 	private Integer id; // 主键
 	@Column(name = "C_COURIER_NUM", unique = true)
@@ -56,6 +50,13 @@ public class Courier {
 
 	@ManyToMany(mappedBy = "couriers")
 	private Set<FixedArea> fixedAreas = new HashSet<FixedArea>();
+
+	@Transient
+	// 防止被生成数据表中的列
+	//在页面的combobox的textField可以获取到info
+	public String getInfo() {
+		return name + "(" + company + ")";
+	}
 
 	public Integer getId() {
 		return id;

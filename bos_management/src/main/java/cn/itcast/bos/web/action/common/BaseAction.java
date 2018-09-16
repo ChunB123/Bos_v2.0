@@ -11,12 +11,16 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
-/**
+
+
+/*
+*
  * 抽取 Action的公共代码 ，简化开发
  * 
  * @author itcast
  *
  */
+
 public abstract class BaseAction<T> extends ActionSupport implements
 		ModelDriven<T> {
 
@@ -67,3 +71,65 @@ public abstract class BaseAction<T> extends ActionSupport implements
 		ActionContext.getContext().getValueStack().push(result);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+public class BaseAction extends ActionSupport implements ModelDriven<T>{
+
+	protected T model;
+
+	@Override
+	public T getModel() {
+		return model;
+	}
+
+	public BaseAction(){
+		//构造子类action对象,获取泛型T
+		Type genericSuperclass = this.getClass().getGenericSuperclass();
+		// 获取类型第一个泛型参数T
+		ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+		Class<T> modelClass = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+		try {
+			model = modelClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+			System.out.println("模型构造失败...");
+		}
+	}
+
+	// 接收分页查询参数
+	protected int page;
+	protected int rows;
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	// 将分页查询结果数据，压入值栈的方法
+	protected void pushPageDataToValueStack(Page<T> pageData) {
+		Map<String,Object> map=new HashMap<>();
+		map.put("total",pageData.getTotalElements());
+		map.put("rows",pageData.getContent());
+
+		ActionContext.getContext().getValueStack().push(map);
+	}
+
+
+}
+*/

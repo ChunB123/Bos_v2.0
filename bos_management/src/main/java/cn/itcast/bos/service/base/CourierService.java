@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import cn.itcast.bos.domain.base.Courier;
 
+import java.util.List;
+
 /**
  * 快递员操作接口
  * 
@@ -21,4 +23,6 @@ public interface CourierService {
 	Page<Courier> findPageData(Specification<Courier> specification,Pageable pageable);
 
 	void delBatch(String[] idArray);
+
+	List<Courier> findNoAssociation();
 }
