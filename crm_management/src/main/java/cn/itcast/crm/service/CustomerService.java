@@ -41,6 +41,11 @@ public interface CustomerService {
 			@QueryParam("customerIdStr") String customerIdStr,
 			@QueryParam("fixedAreaId") String fixedAreaId);
 
+	//bos_fore注册用户
+	@Path("/customer")
+	@POST
+	@Consumes({ "application/xml", "application/json" })
+	void regist(Customer customer);
 
 }
 
