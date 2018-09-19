@@ -47,6 +47,15 @@ public interface CustomerService {
 	@Consumes({ "application/xml", "application/json" })
 	void regist(Customer customer);
 
+	@Path("/customer/telephone/{telephone}")
+	@GET
+	@Consumes({ "application/xml", "application/json" })
+	Customer findByTelephone(@PathParam("telephone") String telephone);
+
+	@Path("/customer/updatetype/{telephone}")
+	@GET
+	void updateType(@PathParam("telephone") String telephone);
+
 }
 
 

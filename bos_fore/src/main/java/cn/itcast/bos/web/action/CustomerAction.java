@@ -9,6 +9,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.ws.rs.core.MediaType;
 
+import cn.itcast.bos.utils.MailUtils;
 import cn.itcast.bos.utils.SmsUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -33,9 +34,9 @@ import cn.itcast.crm.domain.Customer;
 @Controller
 @Scope("prototype")
 public class CustomerAction extends BaseAction<Customer> {
-	/*@Autowired
+	@Autowired
 	@Qualifier("jmsQueueTemplate")
-	private JmsTemplate jmsTemplate;*/
+	private JmsTemplate jmsTemplate;
 
 	@Action(value = "customer_sendSms")
 	public String sendSms() throws IOException {
@@ -56,7 +57,7 @@ public class CustomerAction extends BaseAction<Customer> {
 		//校验是否发送成功
 
 		// 调用MQ服务，发送一条消息
-		/*jmsTemplate.send("bos_sms", new MessageCreator() {
+		jmsTemplate.send("bos_sms", new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
 				MapMessage mapMessage = session.createMapMessage();
@@ -64,7 +65,7 @@ public class CustomerAction extends BaseAction<Customer> {
 				mapMessage.setString("msg", msg);
 				return mapMessage;
 			}
-		});*/
+		});
 		return NONE;
 
 	}
@@ -76,8 +77,8 @@ public class CustomerAction extends BaseAction<Customer> {
 		this.checkcode = checkcode;
 	}
 
-	/*@Autowired
-	private RedisTemplate<String, String> redisTemplate;*/
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 
 	@Action(value = "customer_regist", results = {
 			@Result(name = "success", type = "redirect", location = "signup-success.html"),
@@ -94,14 +95,13 @@ public class CustomerAction extends BaseAction<Customer> {
 		System.out.println("短信验证码成功...");
 		// 调用webService 连接CRM 保存客户信息
 		WebClient
-				.create("http://localhost:9002/crm_management/services"
-						+ "/customerService/customer")
+				.create("http://localhost:9002/crm_management/services/customerService/customer")
 				.type(MediaType.APPLICATION_JSON).post(model);
 		System.out.println("客户注册成功...");
 
 		// 发送一封激活邮件
 		// 生成激活码
-		/*String activecode = RandomStringUtils.randomNumeric(32);
+		String activecode = RandomStringUtils.randomNumeric(32);
 
 		// 将激活码保存到redis，设置24小时失效
 		redisTemplate.opsForValue().set(model.getTelephone(), activecode, 24,
@@ -111,13 +111,13 @@ public class CustomerAction extends BaseAction<Customer> {
 		String content = "尊敬的客户您好，请于24小时内，进行邮箱账户的绑定，点击下面地址完成绑定:<br/><a href='"
 				+ MailUtils.activeUrl + "?telephone=" + model.getTelephone()
 				+ "&activecode=" + activecode + "'>速运快递邮箱绑定地址</a>";
-		MailUtils.sendMail("速运快递激活邮件", content, model.getEmail());*/
+		MailUtils.sendMail("速运快递激活邮件", content, model.getEmail());
 
 		return SUCCESS;
 	}
 
 	// 属性驱动
-	/*private String activecode;
+	private String activecode;
 
 	public void setActivecode(String activecode) {
 		this.activecode = activecode;
@@ -125,42 +125,35 @@ public class CustomerAction extends BaseAction<Customer> {
 
 	@Action("customer_activeMail")
 	public String activeMail() throws IOException {
-		ServletActionContext.getResponse().setContentType(
-				"text/html;charset=utf-8");
-		// 判断激活码是否有效
-		String activecodeRedis = redisTemplate.opsForValue().get(
-				model.getTelephone());
+		ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
+
+		// 判断激活码是否正确
+		String activecodeRedis = redisTemplate.opsForValue().get(model.getTelephone());
 		if (activecodeRedis == null || !activecodeRedis.equals(activecodeRedis)) {
 			// 激活码无效
-			ServletActionContext.getResponse().getWriter()
-					.println("激活码无效，请登录系统，重新绑定邮箱！");
+			ServletActionContext.getResponse().getWriter().println("激活码无效，请登录系统，重新绑定邮箱！");
 		} else {
 			// 激活码有效
 			// 防止重复绑定
 			// 调用CRM webService 查询客户信息，判断是否已经绑定
-			Customer customer = WebClient
-					.create("http://localhost:9002/crm_management/services"
-							+ "/customerService/customer/telephone/"
+			Customer customer = WebClient.create("http://localhost:9002/crm_management/services/customerService/customer/telephone/"
 							+ model.getTelephone())
 					.accept(MediaType.APPLICATION_JSON).get(Customer.class);
 			if (customer.getType() == null || customer.getType() != 1) {
 				// 没有绑定,进行绑定
 				WebClient.create(
-						"http://localhost:9002/crm_management/services"
-								+ "/customerService/customer/updatetype/"
+						"http://localhost:9002/crm_management/services/customerService/customer/updatetype/"
 								+ model.getTelephone()).get();
-				ServletActionContext.getResponse().getWriter()
-						.println("邮箱绑定成功！");
+				ServletActionContext.getResponse().getWriter().println("邮箱绑定成功！");
 			} else {
 				// 已经绑定过
-				ServletActionContext.getResponse().getWriter()
-						.println("邮箱已经绑定过，无需重复绑定！");
+				ServletActionContext.getResponse().getWriter().println("邮箱已经绑定过，无需重复绑定！");
 			}
 
 			// 删除redis的激活码
 			redisTemplate.delete(model.getTelephone());
 		}
 		return NONE;
-	}*/
+	}
 
 }

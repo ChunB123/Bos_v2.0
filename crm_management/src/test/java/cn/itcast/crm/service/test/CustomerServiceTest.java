@@ -1,5 +1,7 @@
 package cn.itcast.crm.service.test;
 
+import cn.itcast.crm.dao.CustomerRepository;
+import cn.itcast.crm.domain.Customer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +15,10 @@ import cn.itcast.crm.service.CustomerService;
 public class CustomerServiceTest {
 
 	@Autowired
-	private CustomerService customerService;
+	private CustomerRepository customerRepository;
 
 	@Test
-	public void testFindNoAssociationCustomers() {
-		System.out.println(customerService.findNoAssociationCustomers());
+	public void findByTelephone() {
+		System.out.println(customerRepository.findByTelephone("13834560002"));
 	}
-
-	@Test
-	public void testFindHasAssociationFixedAreaCustomers() {
-		System.out.println(customerService
-				.findHasAssociationFixedAreaCustomers("dq001"));
-	}
-
-	@Test
-	public void testAssociationCustomersToFixedArea() {
-		customerService.associationCustomersToFixedArea("1,2", "dq001");
-	}
-
 }
