@@ -8,13 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import cn.itcast.bos.constant.Constants;
+
 
 /**
  * @description:促销信息实体类
  */
 @Entity
 @Table(name = "T_PROMOTION")
+@XmlRootElement(name = "promotion")
 public class Promotion implements Serializable {
+
 
 	@Id
 	@GeneratedValue
@@ -58,7 +64,10 @@ public class Promotion implements Serializable {
 	}
 
 	public String getTitleImg() {
-		return titleImg;
+		if (titleImg.startsWith(Constants.BOS_MANAGEMENT_URL)) {
+			return titleImg;
+		}
+		return Constants.BOS_MANAGEMENT_URL + titleImg;
 	}
 
 	public void setTitleImg(String titleImg) {
@@ -122,7 +131,12 @@ public class Promotion implements Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		if (description.contains("<img src=\"" + Constants.BOS_MANAGEMENT_URL
+				+ "/")) {
+			return description;
+		}
+		return description.replace("<img src=\"/", "<img src=\""
+				+ Constants.BOS_MANAGEMENT_URL + "/");
 	}
 
 	public void setDescription(String description) {

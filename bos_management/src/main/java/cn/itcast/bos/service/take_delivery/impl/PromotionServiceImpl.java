@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.itcast.bos.dao.take_delivery.PromotionRepository;
-//import cn.itcast.bos.domain.page.PageBean;
+import cn.itcast.bos.domain.page.PageBean;
 import cn.itcast.bos.domain.take_delivery.Promotion;
 import cn.itcast.bos.service.take_delivery.PromotionService;
 
@@ -30,19 +30,20 @@ public class PromotionServiceImpl implements PromotionService {
 	public Page<Promotion> findPageData(Pageable pageable) {
 		return promotionRepository.findAll(pageable);
 	}
-/*
+
+
 	@Override
 	public PageBean<Promotion> findPageData(int page, int rows) {
 		Pageable pageable = new PageRequest(page - 1, rows);
 		Page<Promotion> pageData = promotionRepository.findAll(pageable);
 
-		// 封装到Page对象
+		// 手动封装到PageBean对象
 		PageBean<Promotion> pageBean = new PageBean<Promotion>();
 		pageBean.setTotalCount(pageData.getTotalElements());
 		pageBean.setPageData(pageData.getContent());
 
 		return pageBean;
-	}*/
+	}
 
 	@Override
 	public Promotion findById(Integer id) {

@@ -79,35 +79,10 @@ public class PromotionAction extends BaseAction<Promotion> {
 		// 调用业务层，完成活动任务数据保存
 		promotionService.save(model);
 
+
+
 		return SUCCESS;
 	}
-
-
-
-	/*@Action(value = "promotion_pageQuery", results = { @Result(name = "success", type = "json") })
-	public String pageQuery() {
-		// 构造分页查询参数
-		Pageable pageable = new PageRequest(page - 1, rows);
-		// 调用业务层 完成查询
-		Page<Promotion> pageData = promotionService.findPageData(pageable);
-		// 压入值栈
-		pushPageDataToValueStack(pageData);
-
-		return SUCCESS;
-	}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	@Action(value = "promotion_pageQuery",results = {@Result(name = "success",type = "json")})

@@ -1,7 +1,5 @@
 package cn.itcast.bos.domain.base;
 
-import org.apache.struts2.json.annotations.JSON;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.struts2.json.annotations.JSON;
 
 /**
  * @description:定区
@@ -43,7 +43,6 @@ public class FixedArea {
 	private String operator; // 操作员
 	@Column(name = "C_OPERATING_COMPANY")
 	private String operatingCompany; // 操作单位
-
 
 	@OneToMany(mappedBy = "fixedArea")
 	private Set<SubArea> subareas = new HashSet<SubArea>(0);

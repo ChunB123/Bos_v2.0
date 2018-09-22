@@ -14,7 +14,6 @@
 			<a href="#/Android">Android</a>
 		</div>
 		<!-- 路由加载后，更新变化的内容 -->
-        <!--ng-view显示路由调用的页面-->
 		<div ng-view>
 			
 		</div>
@@ -23,7 +22,7 @@
 		</div>
 	</body>
 	<script type="text/javascript">
-		// 定义 myapp 模块
+		// 定义 myapp 模块 
 		var myapp = angular.module("myapp",["ngRoute"]);
 		
 		// 配置模块的路由 
@@ -39,8 +38,6 @@
 			 	redirectTo: '/JavaEE'
 			 });
 		}]);
-
-
 		
 	</script>
 </html>

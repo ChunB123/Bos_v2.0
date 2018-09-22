@@ -8,6 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import cn.itcast.bos.domain.page.PageBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,11 +24,11 @@ public interface PromotionService {
 	Page<Promotion> findPageData(Pageable pageable);
 
 	// 根据page和rows 返回分页数据
-	/*@Path("/pageQuery")
+	@Path("/pageQuery")
 	@GET
 	@Produces({ "application/xml", "application/json" })
 	PageBean<Promotion> findPageData(@QueryParam("page") int page,
-	                                 @QueryParam("rows") int rows);*/
+	                                 @QueryParam("rows") int rows);
 
 	// 根据id 查询
 	@Path("/promotion/{id}")

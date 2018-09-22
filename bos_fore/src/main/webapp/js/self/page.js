@@ -1,4 +1,4 @@
-function ctrlRead($scope, $http ) {
+bosfore_app.controller("ctrlRead", ['$scope', '$http', function($scope, $http) {
 	$scope.currentPage = 1;
 	$scope.pageSize = 4;
 	$scope.totalCount = 0;
@@ -17,44 +17,56 @@ function ctrlRead($scope, $http ) {
 	}
 
 	$scope.selectPage = function(page) {
+		// 如果页码超出范围
+		if($scope.totalPages != 0) {
+			if(page < 1 || page > $scope.totalPages) return;
+		}
+
 		$http({
 			method: 'GET',
-			url: 'data/promotion'+page+'.json',
+			url: 'promotion_pageQuery.action',
 			params: {
-				"page": page,
-				"pageSize": $scope.pageSize
+				"page": page, // 当前页码 
+				"rows": $scope.pageSize // 每页记录数
 			}
 		}).success(function(data, status, headers, config) {
+			// 显示表格数据 
 			$scope.pageItems = data.pageData;
+			// 计算总页数
 			$scope.totalCount = data.totalCount;
 			$scope.totalPages = Math.ceil($scope.totalCount / $scope.pageSize);
 
-			// 第1,2 页 
-			if(page <= 2) {
-				$scope.pageList = [];
-				$scope.newPages = $scope.totalPages > 5 ? 5 : $scope.totalPages;
-				for(var i = 0; i < $scope.newPages; i++) {
-					$scope.pageList.push(i + 1);
-				}
+			// 当前显示页，设为当前页
+			$scope.currentPage = page;
+
+			// 固定显示10页 (前5后4)
+			var begin;
+			var end;
+
+			begin = page - 5;
+			if(begin < 0) {
+				begin = 1;
 			}
+
+			end = begin + 9;
+			if(end > $scope.totalPages) {
+				end = $scope.totalPages;
+			}
+
+			begin = end - 9;
+			if(begin < 1) {
+				begin = 1;
+			}
+
+			$scope.pageList = new Array();
+			for(var i = begin; i <= end; i++) {
+				$scope.pageList.push(i);
+			}
+			
 		}).error(function(data, status, headers, config) {
 			// 当响应以错误状态返回时调用
+			alert("出错，请联系管理员 ");
 		});
-
-		//不能小于1大于最大
-		if(page < 1 || page > $scope.totalPages) return;
-
-		//最多显示分页数5
-		if(page > 2) {
-			//因为只显示5个页数，大于2页开始分页转换
-			var newpageList = [];
-			for(var i = (page - 3); i < ((page + 2) > $scope.totalPages ? $scope.totalPages : (page + 2)); i++) {
-				newpageList.push(i + 1);
-			}
-			$scope.pageList = newpageList;
-		}
-		$scope.currentPage = page;
-		$scope.isActivePage(page);
 	}
 
 	$scope.isActivePage = function(page) {
@@ -63,6 +75,5 @@ function ctrlRead($scope, $http ) {
 
 	// 发起请求 显示第一页数据 
 	$scope.selectPage($scope.currentPage);
-	
-}
-ctrlRead.$inject = ['$scope', '$http' ];
+
+}]);

@@ -9,8 +9,6 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.ws.rs.core.MediaType;
 
-import cn.itcast.bos.utils.MailUtils;
-import cn.itcast.bos.utils.SmsUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.struts2.ServletActionContext;
@@ -26,7 +24,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 
-//import cn.itcast.bos.utils.MailUtils;
+import cn.itcast.bos.utils.MailUtils;
 import cn.itcast.crm.domain.Customer;
 
 @ParentPackage("json-default")
@@ -51,10 +49,6 @@ public class CustomerAction extends BaseAction<Customer> {
 		// 编辑短信内容
 		final String msg = "尊敬的用户您好，本次获取的验证码为：" + randomCode
 				+ ",服务电话：4006184000";
-
-		//模拟发送成功
-		//String result=SmsUtils.sendSmsByHTTP(model.getTelephone(),msg);
-		//校验是否发送成功
 
 		// 调用MQ服务，发送一条消息
 		jmsTemplate.send("bos_sms", new MessageCreator() {
@@ -86,16 +80,17 @@ public class CustomerAction extends BaseAction<Customer> {
 	public String regist() {
 		// 先校验短信验证码，如果不通过，调回注册页面
 		// 从session获取 之前生成验证码
-		String checkcodeSession = (String) ServletActionContext.getRequest().getSession().getAttribute(model.getTelephone());
+		String checkcodeSession = (String) ServletActionContext.getRequest()
+				.getSession().getAttribute(model.getTelephone());
 		if (checkcodeSession == null || !checkcodeSession.equals(checkcode)) {
 			System.out.println("短信验证码错误...");
 			// 短信验证码错误
 			return INPUT;
 		}
-		System.out.println("短信验证码成功...");
 		// 调用webService 连接CRM 保存客户信息
 		WebClient
-				.create("http://localhost:9002/crm_management/services/customerService/customer")
+				.create("http://localhost:9002/crm_management/services"
+						+ "/customerService/customer")
 				.type(MediaType.APPLICATION_JSON).post(model);
 		System.out.println("客户注册成功...");
 
@@ -125,29 +120,36 @@ public class CustomerAction extends BaseAction<Customer> {
 
 	@Action("customer_activeMail")
 	public String activeMail() throws IOException {
-		ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
-
-		// 判断激活码是否正确
-		String activecodeRedis = redisTemplate.opsForValue().get(model.getTelephone());
+		ServletActionContext.getResponse().setContentType(
+				"text/html;charset=utf-8");
+		// 判断激活码是否有效
+		String activecodeRedis = redisTemplate.opsForValue().get(
+				model.getTelephone());
 		if (activecodeRedis == null || !activecodeRedis.equals(activecodeRedis)) {
 			// 激活码无效
-			ServletActionContext.getResponse().getWriter().println("激活码无效，请登录系统，重新绑定邮箱！");
+			ServletActionContext.getResponse().getWriter()
+					.println("激活码无效，请登录系统，重新绑定邮箱！");
 		} else {
 			// 激活码有效
 			// 防止重复绑定
 			// 调用CRM webService 查询客户信息，判断是否已经绑定
-			Customer customer = WebClient.create("http://localhost:9002/crm_management/services/customerService/customer/telephone/"
+			Customer customer = WebClient
+					.create("http://localhost:9002/crm_management/services"
+							+ "/customerService/customer/telephone/"
 							+ model.getTelephone())
 					.accept(MediaType.APPLICATION_JSON).get(Customer.class);
 			if (customer.getType() == null || customer.getType() != 1) {
 				// 没有绑定,进行绑定
 				WebClient.create(
-						"http://localhost:9002/crm_management/services/customerService/customer/updatetype/"
+						"http://localhost:9002/crm_management/services"
+								+ "/customerService/customer/updatetype/"
 								+ model.getTelephone()).get();
-				ServletActionContext.getResponse().getWriter().println("邮箱绑定成功！");
+				ServletActionContext.getResponse().getWriter()
+						.println("邮箱绑定成功！");
 			} else {
 				// 已经绑定过
-				ServletActionContext.getResponse().getWriter().println("邮箱已经绑定过，无需重复绑定！");
+				ServletActionContext.getResponse().getWriter()
+						.println("邮箱已经绑定过，无需重复绑定！");
 			}
 
 			// 删除redis的激活码

@@ -75,5 +75,11 @@
 	
 	<!-- 整合spring data jpa,通过扫描dao接口,简化dao -->
 	<jpa:repositories base-package="cn.itcast.bos.dao" />
+
+    <!--引入webservice配置文件-->
+    <import resource="applicationContext-webService.xml"/>
+
+    <!--引入Quartz配置文件-->
+    <import resource="applicationContext-quartz.xml"/>
 	
 </beans>
