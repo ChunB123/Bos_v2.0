@@ -9,6 +9,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.ws.rs.core.MediaType;
 
+import cn.itcast.bos.constant.Constants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.struts2.ServletActionContext;
@@ -32,8 +33,8 @@ import cn.itcast.crm.domain.Customer;
 @Controller
 @Scope("prototype")
 public class CustomerAction extends BaseAction<Customer> {
-	@Autowired
-	@Qualifier("jmsQueueTemplate")
+	/*@Autowired
+	@Qualifier("jmsQueueTemplate")*/
 	private JmsTemplate jmsTemplate;
 
 	@Action(value = "customer_sendSms")
@@ -156,6 +157,27 @@ public class CustomerAction extends BaseAction<Customer> {
 			redisTemplate.delete(model.getTelephone());
 		}
 		return NONE;
+	}
+
+	@Action(value = "customer_login", results = {
+			@Result(name = "login", location = "login.html", type = "redirect"),
+			@Result(name = "success", location = "index.html#/myhome", type = "redirect") })
+	public String login() {
+		Customer customer = WebClient
+				.create(Constants.CRM_MANAGEMENT_URL
+						+ "/services/customerService/customer/login?telephone="
+						+ model.getTelephone() + "&password="
+						+ model.getPassword())
+				.accept(MediaType.APPLICATION_JSON).get(Customer.class);
+		if (customer == null) {
+			// 登录失败
+			return LOGIN;
+		} else {
+			// 登录成功
+			ServletActionContext.getRequest().getSession()
+					.setAttribute("customer", customer);
+			return SUCCESS;
+		}
 	}
 
 }

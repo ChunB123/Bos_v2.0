@@ -28,4 +28,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	@Query("update Customer set type=1 where telephone= ?")
 	@Modifying
 	void updateType(String telephone);
+
+	Customer findByTelephoneAndPassword(String telephone, String password);
+
+	@Query("select fixedAreaId from Customer where address=?")
+	String findFixedAreaIdByAddress(String address);
 }

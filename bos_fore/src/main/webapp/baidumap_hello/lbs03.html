@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>云地理编码</title>
+		<script type="text/javascript" src="js/jquery.js" ></script>
+		<script type="text/javascript">
+		    var address = encodeURIComponent("金燕龙办公楼");
+			$.getJSON("http://api.map.baidu.com/cloudgc/v1?ak=iGucct5NnEZNx9A9evLYGIzaS0PYIxZq&address="+address+"&callback=?",function(data){
+				console.log(data);
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
