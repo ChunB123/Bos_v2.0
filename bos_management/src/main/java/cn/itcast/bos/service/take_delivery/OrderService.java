@@ -8,8 +8,12 @@ import cn.itcast.bos.domain.take_delivery.Order;
 
 public interface OrderService {
 
+
+
 	@Path("/order")
 	@POST
 	@Consumes({ "application/xml", "application/json" })
 	void saveOrder(Order order);
+
+	Order findByOrderNum(String orderNum);
 }

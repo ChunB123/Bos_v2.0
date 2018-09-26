@@ -48,8 +48,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private WorkBillRepository workBillRepository;
 
-	@Autowired
-	@Qualifier("jmsQueueTemplate")
+	/*@Autowired
+	@Qualifier("jmsQueueTemplate")*/
 	private JmsTemplate jmsTemplate;
 
 	@Override
@@ -144,6 +144,8 @@ public class OrderServiceImpl implements OrderService {
 		orderRepository.save(order);
 	}
 
+
+
 	// 生成工单，发送短信
 	private void generateWorkBill(final Order order) {
 		// 生成工单
@@ -189,5 +191,11 @@ public class OrderServiceImpl implements OrderService {
 		// 保存订单
 		orderRepository.save(order);
 	}
+
+	@Override
+	public Order findByOrderNum(String orderNum) {
+		return orderRepository.findByOrderNum(orderNum);
+	}
+
 
 }
