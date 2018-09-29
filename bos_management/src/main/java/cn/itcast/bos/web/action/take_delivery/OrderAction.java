@@ -8,6 +8,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -17,19 +18,26 @@ import cn.itcast.bos.web.action.common.BaseAction;
 
 import com.opensymphony.xwork2.ActionContext;
 
+import javax.annotation.Resource;
+
 @ParentPackage("json-default")
 @Namespace("/")
 @Controller
 @Scope("prototype")
 public class OrderAction extends BaseAction<Order> {
 
+	//OrderServiceImpl
 	@Autowired
+	//@Resource(name = "OrderServiceImpl")
 	private OrderService orderService;
+
 
 	@Action(value = "order_findByOrderNum", results = { @Result(name = "success", type = "json") })
 	public String findByOrderNum() {
 		// 调用业务层，查询Order信息
+
 		Order order = orderService.findByOrderNum(model.getOrderNum());
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (order == null) {
 			// 订单号 不存在

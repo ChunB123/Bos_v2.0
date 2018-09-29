@@ -67,7 +67,7 @@ public class WayBillAction extends BaseAction<WayBill> {
 		Pageable pageable = new PageRequest(page - 1, rows,
 				new Sort(new Sort.Order(Sort.Direction.DESC, "id")));
 		// 调用业务层进行查询
-		Page<WayBill> pageData = wayBillService.findPageData(pageable);
+		Page<WayBill> pageData = wayBillService.findPageData(model,pageable);
 		// 压入值栈返回
 		pushPageDataToValueStack(pageData);
 

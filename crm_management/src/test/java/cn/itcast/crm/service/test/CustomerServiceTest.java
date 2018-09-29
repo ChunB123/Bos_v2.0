@@ -17,8 +17,21 @@ public class CustomerServiceTest {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+
+
 	@Test
 	public void findByTelephone() {
 		System.out.println(customerRepository.findByTelephone("13834560002"));
+	}
+
+	@Test
+	public void reg(){
+		Customer customer=new Customer();
+		customer.setUsername("xxxxxx");
+
+
+
+
+		customerRepository.save(customer);
 	}
 }

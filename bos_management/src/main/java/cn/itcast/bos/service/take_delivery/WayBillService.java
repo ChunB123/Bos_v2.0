@@ -11,7 +11,7 @@ public interface WayBillService {
 	void save(WayBill wayBill);
 
 	// 无条件 分页查询
-	Page<WayBill> findPageData( Pageable pageable);
+	Page<WayBill> findPageData(WayBill wayBill,Pageable pageable);
 
 	// 根据运单号查询
 	WayBill findByWayBillNum(String wayBillNum);
