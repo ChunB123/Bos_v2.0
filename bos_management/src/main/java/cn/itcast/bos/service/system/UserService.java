@@ -8,8 +8,8 @@ public interface UserService {
 
 	User findByUsername(String username);
 
-	/*List<User> findAll();
+	List<User> findAll();
 
-	void saveUser(User user, String[] roleIds);*/
+	void saveUser(User user, String[] roleIds);
 
 }

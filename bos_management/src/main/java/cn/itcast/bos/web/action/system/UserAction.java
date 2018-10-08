@@ -50,7 +50,7 @@ public class UserAction extends BaseAction<User> {
 		}
 	}
 
-	/*@Action(value = "user_logout", results = { @Result(name = "success", type = "redirect", location = "login.html") })
+	@Action(value = "user_logout", results = { @Result(name = "success", type = "redirect", location = "login.html") })
 	public String logout() {
 		// 基于shiro完成退出
 		Subject subject = SecurityUtils.getSubject();
@@ -82,5 +82,5 @@ public class UserAction extends BaseAction<User> {
 		// 调用业务层
 		userService.saveUser(model, roleIds);
 		return SUCCESS;
-	}*/
+	}
 }

@@ -30,17 +30,17 @@ public class BosRealm extends AuthorizingRealm {
 	@Autowired
 	private UserService userService;
 
-	/*@Autowired
+	@Autowired
 	private RoleService roleService;
 
 	@Autowired
-	private PermissionService permissionService;*/
+	private PermissionService permissionService;
 
 	@Override
 	// 授权...
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
 		System.out.println("shiro 授权管理...");
-		/*SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		// 根据当前登录用户 查询对应角色和权限
 		Subject subject = SecurityUtils.getSubject();
 		User user = (User) subject.getPrincipal();
@@ -55,8 +55,7 @@ public class BosRealm extends AuthorizingRealm {
 			authorizationInfo.addStringPermission(permission.getKeyword());
 		}
 
-		return authorizationInfo;*/
-		return null;
+		return authorizationInfo;
 	}
 
 	@Override
@@ -69,8 +68,7 @@ public class BosRealm extends AuthorizingRealm {
 		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
 
 		// 根据用户名 查询 用户信息
-		User user = userService.findByUsername(usernamePasswordToken
-				.getUsername());
+		User user = userService.findByUsername(usernamePasswordToken.getUsername());
 		if (user == null) {
 			// 用户名不存在
 			// 参数一： 期望登录后，保存在Subject中信息

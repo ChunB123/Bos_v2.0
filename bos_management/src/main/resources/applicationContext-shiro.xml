@@ -64,8 +64,8 @@ reset 根据指定 HTTP 请求访问才能访问-->
 	<bean id="lifecycleBeanPostProcessor"
 		class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 		
-	<!-- 开启shiro注解模式  -->
-	<!--<bean
+	 <!--开启shiro注解模式  -->
+	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
 		depends-on="lifecycleBeanPostProcessor" >
 		<property name="proxyTargetClass" value="true" />
@@ -73,6 +73,6 @@ reset 根据指定 HTTP 请求访问才能访问-->
 
 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		 <property name="securityManager" ref="securityManager"/>
-	</bean>-->
+	</bean>
 	
 </beans>

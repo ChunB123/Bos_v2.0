@@ -19,15 +19,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	/*@Autowired
-	private RoleRepository roleRepository;*/
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Override
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
 
-	/*@Override
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
@@ -43,6 +43,6 @@ public class UserServiceImpl implements UserService {
 				user.getRoles().add(role);
 			}
 		}
-	}*/
+	}
 
 }
