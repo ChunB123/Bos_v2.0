@@ -24,7 +24,7 @@ import cn.itcast.bos.service.system.UserService;
 import org.springframework.stereotype.Service;
 
 // 自定义Realm ，实现安全数据 连接
-@Service("bosRealm")
+//@Service("bosRealm")
 public class BosRealm extends AuthorizingRealm {
 
 	@Autowired

@@ -52,14 +52,14 @@ reset 根据指定 HTTP 请求访问才能访问-->
 	<bean id="securityManager" 
 		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="bosRealm" />
-		<!--<property name="cacheManager" ref="shiroCacheManager" />-->
+		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>
 	
 	<!-- 配置Realm -->
-	<!--<bean id="bosRealm" class="cn.itcast.bos.realm.BosRealm">
-		&lt;!&ndash; 缓存区的名字 就是 ehcache.xml 自定义 cache的name &ndash;&gt;
+	<bean id="bosRealm" class="cn.itcast.bos.realm.BosRealm">
+		<!-- 缓存区的名字 就是 ehcache.xml 自定义 cache的name -->
 		<property name="authorizationCacheName" value="bos" />
-	</bean>-->
+	</bean>
 	
 	<bean id="lifecycleBeanPostProcessor"
 		class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
